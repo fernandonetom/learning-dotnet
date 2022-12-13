@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "kIME5kUgAYncIC1nPBS1jEqTsL7jvJ6dCCjRZ4apzPg=",
+  "Source": "learning-dotnet",
+  "BasePath": "_content/learning-dotnet",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
