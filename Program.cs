@@ -13,6 +13,7 @@ ProductRepository productRepository = new ProductRepository();
 app.MapPost("/product", (Product product) =>
 {
   productRepository.Add(product);
+  return Results.Created("/product", product.Code);
 });
 
 app.MapGet("/product", ([FromQuery] string? dateStart, [FromQuery] string? dateEnd) =>
@@ -23,22 +24,34 @@ app.MapGet("/product", ([FromQuery] string? dateStart, [FromQuery] string? dateE
 app.MapPut("/product/{code}", ([FromRoute] string code, [FromBody] Product product) =>
 {
   var productExists = productRepository.GetBy(code);
-  productExists.Name = product.Name;
+
+  if (productExists != null)
+  {
+    productExists.Name = product.Name;
+    Results.NoContent();
+  }
+
+  return Results.NotFound();
 });
 
 app.MapDelete("/product/{code}", ([FromRoute] string code) =>
 {
   var product = productRepository.GetBy(code);
   if (product is null)
-    throw new Exception("Produto não encontrado");
+    return Results.NotFound();
 
   productRepository.Remove(product);
+  return Results.NoContent();
 
 });
 
 app.MapGet("/product/{code}", ([FromRoute] string code) =>
 {
-  return productRepository.GetBy(code);
+  var product = productRepository.GetBy(code);
+
+  if (product is not null) return Results.Ok(product);
+
+  return Results.NotFound();
 });
 
 app.Run();
